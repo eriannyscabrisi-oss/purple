@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LIENZO VIVO - Estudio de Tatuajes</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Playfair Display & Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,400&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom Tailwinds Settings -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        tattooRed: {
+                            DEFAULT: '#dc2626',
+                            hover: '#ef4444',
+                            dark: '#991b1b',
+                            light: '#fee2e2'
+                        },
+                        tattooDark: {
+                            DEFAULT: '#0a0a0a',
+                            panel: '#121212',
+                            card: '#1a1a1a',
+                            border: '#2a2a2a'
+                        }
+                    },
+                    animation: {
+                        'pulse-glow': 'pulseGlow 2s infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes pulseGlow {
+            0%, 100% { filter: drop-shadow(0 0 5px rgba(220, 38, 38, 0.4)); }
+            50% { filter: drop-shadow(0 0 15px rgba(220, 38, 38, 0.8)); }
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #dc2626;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ef4444;
+        }
+    </style>
+</head>
+<body class="bg-tattooDark text-slate-100 font-sans selection:bg-tattooRed selection:text-white overflow-x-hidden">
+
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 left-0 w-full bg-tattooDark/95 border-b border-tattooDark-border z-50 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full border border-tattooRed flex items-center justify-center animate-pulse-glow">
+                        <i class="fa-solid fa-skull-crossbones text-tattooRed text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="font-serif text-2xl font-black tracking-widest text-white">LIENZO<span class="text-tattooRed">VIVO</span></span>
+                        <p class="text-[9px] uppercase tracking-[0.3em] text-slate-400 font-semibold -mt-1">Arte Perpetuo en la Piel</p>
+                    </div>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#inicio" class="text-sm font-semibold tracking-wider hover:text-tattooRed transition duration-300">INICIO</a>
+                    <a href="#galeria" class="text-sm font-semibold tracking-wider hover:text-tattooRed transition duration-300">GALERÍA</a>
+                    <a href="#simulador" class="text-sm font-semibold tracking-wider hover:text-tattooRed transition duration-300">PROBADOR VIRTUAL</a>
+                    <a href="#artistas" class="text-sm font-semibold tracking-wider hover:text-tattooRed transition duration-300">ARTISTAS</a>
+                    <a href="#cuestionario" class="text-sm font-semibold tracking-wider hover:text-tattooRed transition duration-300">DISEÑA TU IDEA</a>
+                    <a href="#reserva" class="px-5 py-2.5 bg-tattooRed hover:bg-tattooRed-hover text-white text-xs font-bold uppercase tracking-widest rounded transition duration-300 shadow-lg shadow-tattooRed/20 hover:shadow-tattooRed/40">CITA ONLINE</a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-slate-100 hover:text-tattooRed focus:outline-none" aria-label="Toggle menu">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="hidden md:hidden bg-tattooDark/98 border-b border-tattooDark-border">
+            <div class="px-4 pt-2 pb-6 space-y-3 flex flex-col items-center">
+                <a href="#inicio" class="mobile-link text-base font-semibold py-2">INICIO</a>
+                <a href="#galeria" class="mobile-link text-base font-semibold py-2">GALERÍA</a>
+                <a href="#simulador" class="mobile-link text-base font-semibold py-2">PROBADOR VIRTUAL</a>
+                <a href="#artistas" class="mobile-link text-base font-semibold py-2">ARTISTAS</a>
+                <a href="#cuestionario" class="mobile-link text-base font-semibold py-2">DISEÑA TU IDEA</a>
+                <a href="#reserva" class="w-full text-center px-5 py-3 bg-tattooRed hover:bg-tattooRed-hover text-white text-xs font-bold uppercase tracking-widest rounded transition duration-300">CITA ONLINE</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="relative min-h-screen flex items-center justify-center bg-black pt-20 overflow-hidden">
+        <!-- Background Tattoo Pattern Layer with Fallback overlay -->
+        <div class="absolute inset-0 z-0 opacity-20 pointer-events-none bg-[radial-gradient(#dc2626_1px,transparent_1px)] [background-size:16px_16px] md:[background-size:24px_24px]"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-tattooDark via-tattooDark/80 to-black z-0"></div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
+            <!-- Dynamic Red/White accent banner -->
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-tattooRed/30 bg-tattooRed/10 text-tattooRed text-xs font-bold uppercase tracking-widest mb-6">
+                <i class="fa-solid fa-fire animate-pulse text-sm"></i> Estética Exclusiva & Tinta Eterna
+            </div>
+            
+            <h1 class="font-serif text-5xl sm:text-7xl lg:text-9xl font-black text-white leading-tight uppercase select-none tracking-tight">
+                EL ARTE ES <br class="hidden sm:inline">
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-tattooRed">INMORTAL</span>
+            </h1>
+            
+            <p class="max-w-2xl mx-auto mt-6 text-base sm:text-xl text-slate-300 font-light leading-relaxed">
+                Tus ideas merecen el mejor lienzo. En <strong class="text-white font-semibold">LIENZO VIVO</strong>, convertimos tu historia, devoción y estética en arte duradero hecho por profesionales galardonados internacionalmente.
+            </p>
+
+            <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <a href="#reserva" class="w-full sm:w-auto px-8 py-4 bg-tattooRed hover:bg-tattooRed-hover text-white text-sm font-bold uppercase tracking-widest rounded-lg transition duration-300 shadow-xl shadow-tattooRed/30 hover:scale-105 transform">
+                    <i class="fa-solid fa-calendar-check mr-2"></i> Agendar Cita
+                </a>
+                <a href="#simulador" class="w-full sm:w-auto px-8 py-4 bg-transparent border border-white hover:border-tattooRed text-white hover:text-tattooRed text-sm font-bold uppercase tracking-widest rounded-lg transition duration-300 hover:scale-105 transform">
+                    <i class="fa-solid fa-wand-magic-sparkles mr-2"></i> Probar Simulador
+                </a>
+            </div>
+
+            <!-- Features Quick Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-20 max-w-5xl mx-auto border-t border-tattooDark-border pt-10">
+                <div class="flex flex-col items-center">
+                    <span class="font-serif text-3xl font-bold text-tattooRed">100%</span>
+                    <span class="text-xs text-slate-400 mt-1 uppercase tracking-wider">Higiénico & Bioseguro</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <span class="font-serif text-3xl font-bold text-white">5+</span>
+                    <span class="text-xs text-slate-400 mt-1 uppercase tracking-wider">Artistas Élite</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <span class="font-serif text-3xl font-bold text-white">15K+</span>
+                    <span class="text-xs text-slate-400 mt-1 uppercase tracking-wider">Pieles Tatuadas</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <span class="font-serif text-3xl font-bold text-tattooRed">4.9★</span>
+                    <span class="text-xs text-slate-400 mt-1 uppercase tracking-wider">En Google Reviews</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="galeria" class="py-24 bg-tattooDark-panel border-y border-tattooDark-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="font-serif text-4xl sm:text-5xl font-black text-white uppercase tracking-wider">
+                    Galería de <span class="text-tattooRed">Inspiración</span>
+                </h2>
+                <div class="h-1 w-20 bg-tattooRed mx-auto my-4 rounded-full"></div>
+                <p class="text-slate-400 text-sm sm:text-base">
+                    Explora trabajos reales diseñados y completados en nuestro estudio. Selecciona una categoría para ver el estilo técnico detallado.
+                </p>
+            </div>
+
+            <!-- Filter Buttons -->
+            <div class="flex flex-wrap justify-center gap-3 mb-10">
+                <button onclick="filterGallery('todos')" class="gallery-tab active px-5 py-2.5 rounded text-xs font-bold uppercase tracking-wider transition bg-tattooRed text-white border border-transparent">TODOS</button>
+                <button onclick="filterGallery('blackwork')" class="gallery-tab px-5 py-2.5 rounded text-xs font-bold uppercase tracking-wider transition bg-tattooDark-card text-slate-300 border border-tattooDark-border hover:border-tattooRed">BLACKWORK</button>
+                <button onclick="filterGallery('realismo')" class="gallery-tab px-5 py-2.5 rounded text-xs font-bold uppercase tracking-wider transition bg-tattooDark-card text-slate-300 border border-tattooDark-border hover:border-tattooRed">REALISMO</button>
+                <button onclick="filterGallery('tradicional')" class="gallery-tab px-5 py-2.5 rounded text-xs font-bold uppercase tracking-wider transition bg-tattooDark-card text-slate-300 border border-tattooDark-border hover:border-tattooRed">TRADICIONAL</button>
+                <button onclick="filterGallery('fineline')" class="gallery-tab px-5 py-2.5 rounded text-xs font-bold uppercase tracking-wider transition bg-tattooDark-card text-slate-300 border border-tattooDark-border hover:border-tattooRed">LÍNEA FINA</button>
+            </div>
+
+            <!-- Grid of Images with Fallback Design Cards -->
+            <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <!-- Card 1: Blackwork (Snake & Sword) -->
+                <div class="gallery-item group relative bg-tattooDark overflow-hidden rounded-xl border border-tattooDark-border cursor-pointer aspect-square" data-category="blackwork" onclick="openLightbox('https://images.unsplash.com/photo-1550537687-c91072c4792d?q=80&w=600&auto=format&fit=crop', 'Daga y Serpiente - Blackwork sólido con texturas sombreadas con puntillismo de arrastre.', 'Alejandro Cruz')">
+                    <img src="https://images.unsplash.com/photo-1550537687-c91072c4792d?q=80&w=600&auto=format&fit=crop" onerror="this.src='https://placehold.co/600x600/121212/ef4444?text=Blackwork+Art'" alt="Tatuaje Daga" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex flex-col justify-end p-5">
+                        <span class="text-xs text-tattooRed font-bold tracking-widest uppercase">BLACKWORK</span>
+                        <h4 class="text-lg font-serif font-bold text-white">Daga y Serpiente</h4>
+                        <p class="text-xs text-slate-300 mt-1">Por: Alejandro Cruz</p>
+                    </div>
+                </div>
+
+                <!-- Card 2: Realismo (Tiger/Eyes) -->
+                <div class="gallery-item group relative bg-tattooDark overflow-hidden rounded-xl border border-tattooDark-border cursor-pointer aspect-square" data-category="realismo" onclick="openLightbox('https://images.unsplash.com/photo-1611501275019-9b5cda994e8d?q=80&w=600&auto=format&fit=crop', 'Mirada Feroz - Retrato realista de tigre de bengala con brillos en blanco.', 'Diana Arango')">
+                    <img src="https://images.unsplash.com/photo-1611501275019-9b5cda994e8d?q=80&w=600&auto=format&fit=crop" onerror="this.src='https://placehold.co/600x600/121212/ef4444?text=Realismo+Art'" alt="Tatuaje Tigre" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex flex-col justify-end p-5">
+                        <span class="text-xs text-tattooRed font-bold tracking-widest uppercase">REALISMO</span>
+                        <h4 class="text-lg font-serif font-bold text-white">Mirada Feroz</h4>
+                        <p class="text-xs text-slate-300 mt-1">Por: Diana Arango</p>
+                    </div>
+                </div>
+
+                <!-- Card 3: Tradicional (Rose & Skull) -->
+                <div class="gallery-item group relative bg-tattooDark overflow-hidden rounded-xl border border-tattooDark-border cursor-pointer aspect-square" data-category="tradicional" onclick="openLightbox('https://images.unsplash.com/photo-1560707303-4e980c87f848?q=80&w=600&auto=format&fit=crop', 'Cráneo Tradicional - Líneas gruesas, negros saturados y rojos carmesí intensos clásicos.', 'Niko Vandal')">
+                    <img src="https://images.unsplash.com/photo-1560707303-4e980c87f848?q=80&w=600&auto=format&fit=crop" onerror="this.src='https://placehold.co/600x600/121212/ef4444?text=Tradicional+Art'" alt="Tatuaje Cráneo" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex flex-col justify-end p-5">
+                        <span class="text-xs text-tattooRed font-bold tracking-widest uppercase">TRADICIONAL</span>
+                        <h4 class="text-lg font-serif font-bold text-white">Cráneo Clásico</h4>
+                        <p class="text-xs text-slate-300 mt-1">Por: Niko Vandal</p>
+                    </div>
+                </div>
+
+                <!-- Card 4: Línea Fina (Geometric Moon) -->
+                <div class="gallery-item group relative bg-tattooDark overflow-hidden rounded-xl border border-tattooDark-border cursor-pointer aspect-square" data-category="fineline" onclick="openLightbox('https://images.unsplash.com/photo-1590201844882-5829ef210c18?q=80&w=600&auto=format&fit=crop', 'Geometría Lunar - Fases de la luna trazadas con extrema precisión y minimalismo elegante.', 'Sonia Black')">
+                    <img src="https://images.unsplash.com/photo-1590201844882-5829ef210c18?q=80&w=600&auto=format&fit=crop" onerror="this.src='https://placehold.co/600x600/121212/ef4444?text=Fine+Line+Art'" alt="Tatuaje Fases Lunares" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex flex-col justify-end p-5">
+                        <span class="text-xs text-tattooRed font-bold tracking-widest uppercase">LÍNEA FINA</span>
+                        <h4 class="text-lg font-serif font-bold text-white">Geometría Lunar</h4>
+                        <p class="text-xs text-slate-300 mt-1">Por: Sonia Black</p>
+                    </div>
+                </div>
+
+                <!-- Card 5: Blackwork (Dark Forest/Raven) -->
+                <div class="gallery-item group relative bg-tattooDark overflow-hidden rounded-xl border border-tattooDark-border cursor-pointer aspect-square" data-category="blackwork" onclick="openLightbox('https://images.unsplash.com/photo-1598257006458-087169a1f08d?q=80&w=600&auto=format&fit=crop', 'Cuervo Guerrero - Composición oscura y compacta con siluetas neotebrosas.', 'Alejandro Cruz')">
+                    <img src="https://images.unsplash.com/photo-1598257006458-087169a1f08d?q=80&w=600&auto=format&fit=crop" onerror="this.src='https://placehold.co/600x600/121212/ef4444?text=Blackwork+Raven'" alt="Tatuaje Cuervo" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex flex-col justify-end p-5">
+                        <span class="text-xs text-tattooRed font-bold tracking-widest uppercase">BLACKWORK</span>
+                        <h4 class="text-lg font-serif font-bold text-white">Cuervo Guerrero</h4>
+                        <p class="text-xs text-slate-300 mt-1">Por: Alejandro Cruz</p>
+                    </div>
+                </div>
+
+                <!-- Card 6: Realismo (Anatomical Heart) -->
+                <div class="gallery-item group relative bg-tattooDark overflow-hidden rounded-xl border border-tattooDark-border cursor-pointer aspect-square" data-category="realismo" onclick="openLightbox('https://images.unsplash.com/photo-1512413313700-1c5c02742967?q=80&w=600&auto=format&fit=crop', 'Corazón Sagrado - Detalle anatómico híper-realista con toques de luz espectaculares.', 'Diana Arango')">
+                    <img src="https://images.unsplash.com/photo-1512413313700-1c5c02742967?q=80&w=600&auto=format&fit=crop" onerror="this.src='https://placehold.co/600x600/121212/ef4444?text=Realismo+Corazon'" alt="Tatuaje Corazón" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex flex-col justify-end p-5">
+                        <span class="text-xs text-tattooRed font-bold tracking-widest uppercase">REALISMO</span>
+                        <h4 class="text-lg font-serif font-bold text-white">Corazón Sagrado</h4>
+                        <p class="text-xs text-slate-300 mt-1">Por: Diana Arango</p>
+                    </div>
+                </div>
+
+                <!-- Card 7: Tradicional (Bold Snake & Flowers) -->
+                <div class="gallery-item group relative bg-tattooDark overflow-hidden rounded-xl border border-tattooDark-border cursor-pointer aspect-square" data-category="tradicional" onclick="openLightbox('https://images.unsplash.com/photo-1542282088-fe8426682b8f?q=80&w=600&auto=format&fit=crop', 'La Ofrenda - Serpiente tradicional con rosas carmesí y sombreado con látigo.', 'Niko Vandal')">
+                    <img src="https://images.unsplash.com/photo-1542282088-fe8426682b8f?q=80&w=600&auto=format&fit=crop" onerror="this.src='https://placehold.co/600x600/121212/ef4444?text=Tradicional+Serpiente'" alt="Tatuaje Serpiente" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex flex-col justify-end p-5">
+                        <span class="text-xs text-tattooRed font-bold tracking-widest uppercase">TRADICIONAL</span>
+                        <h4 class="text-lg font-serif font-bold text-white">La Ofrenda</h4>
+                        <p class="text-xs text-slate-300 mt-1">Por: Niko Vandal</p>
+                    </div>
+                </div>
+
+                <!-- Card 8: Línea Fina (Delicate Rose) -->
+                <div class="gallery-item group relative bg-tattooDark overflow-hidden rounded-xl border border-tattooDark-border cursor-pointer aspect-square" data-category="fineline" onclick="openLightbox('https://images.unsplash.com/photo-1550537687-c91072c4792d?q=80&w=600&auto=format&fit=crop', 'Rosa de Alba - Una delicada rosa fina, hecha con aguja de tres puntas, sin líneas toscas.', 'Sonia Black')">
+                    <img src="https://images.unsplash.com/photo-1550537687-c91072c4792d?q=80&w=600&auto=format&fit=crop" onerror="this.src='https://placehold.co/600x600/121212/ef4444?text=Fine+Line+Rose'" alt="Tatuaje Rosa" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex flex-col justify-end p-5">
+                        <span class="text-xs text-tattooRed font-bold tracking-widest uppercase">LÍNEA FINA</span>
+                        <h4 class="text-lg font-serif font-bold text-white">Rosa de Alba</h4>
+                        <p class="text-xs text-slate-300 mt-1">Por: Sonia Black</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4 hidden">
+        <button onclick="closeLightbox()" class="absolute top-5 right-5 text-white hover:text-tattooRed text-3xl focus:outline-none" aria-label="Close Lightbox">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div class="max-w-4xl w-full flex flex-col md:flex-row bg-tattooDark-panel rounded-2xl overflow-hidden border border-tattooDark-border">
+            <div class="w-full md:w-2/3 max-h-[70vh] md:max-h-none flex items-center justify-center bg-black">
+                <img id="lightbox-img" src="" alt="Ampliado" class="max-w-full max-h-[60vh] md:max-h-[80vh] object-contain">
+            </div>
+            <div class="w-full md:w-1/3 p-6 md:p-8 flex flex-col justify-between">
+                <div>
+                    <span id="lightbox-category" class="text-xs font-bold text-tattooRed uppercase tracking-widest"></span>
+                    <h3 id="lightbox-title" class="font-serif text-2xl font-black text-white mt-2"></h3>
+                    <p id="lightbox-desc" class="text-slate-300 text-sm mt-4 leading-relaxed"></p>
+                </div>
+                <div class="mt-6 pt-6 border-t border-tattooDark-border flex items-center justify-between">
+                    <div>
+                        <p class="text-[10px] text-slate-500 uppercase tracking-widest">Artista Creador</p>
+                        <p id="lightbox-artist" class="text-sm font-bold text-white"></p>
+                    </div>
+                    <a href="#reserva" onclick="closeLightbox()" class="px-4 py-2 bg-tattooRed hover:bg-tattooRed-hover text-white text-xs font-bold uppercase tracking-wider rounded transition">
+                        RESERVAR
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Virtual Tattoo Simulator -->
+    <section id="simulador" class="py-24 bg-tattooDark border-b border-tattooDark-border relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span class="text-xs text-tattooRed font-extrabold uppercase tracking-[0.2em] px-3 py-1 bg-tattooRed/10 border border-tattooRed/20 rounded-full inline-block mb-3">Tecnología Interactiva</span>
+                <h2 class="font-serif text-4xl sm:text-5xl font-black text-white uppercase tracking-wider">
+                    Probador Virtual <span class="text-tattooRed">"Tu Lienzo"</span>
+                </h2>
+                <div class="h-1 w-20 bg-tattooRed mx-auto my-4 rounded-full"></div>
+                <p class="text-slate-400 text-sm sm:text-base">
+                    Visualiza stencils de tatuajes directamente sobre una silueta de piel. Arrastra, rota, cambia de tamaño y ajusta el color para diseñar tu composición perfecta.
+                </p>
+            </div>
+
+            <!-- Simulator Workspace Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+                <!-- Stencils & Options Sidebar -->
+                <div class="lg:col-span-4 bg-tattooDark-panel p-6 rounded-2xl border border-tattooDark-border flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-lg font-bold text-white border-b border-tattooDark-border pb-3 mb-4">
+                            1. Elige un Stencil de Tinta
+                        </h3>
+                        
+                        <!-- Stencil Selector -->
+                        <div class="grid grid-cols-2 gap-3 mb-6">
+                            <!-- Stencil 1: Dragon -->
+                            <button onclick="selectStencil('dragon')" class="stencil-btn group p-4 bg-tattooDark border border-tattooRed rounded-xl hover:border-tattooRed flex flex-col items-center gap-2 transition" id="btn-stencil-dragon">
+                                <svg class="w-12 h-12 text-slate-300 group-hover:text-tattooRed fill-current" viewBox="0 0 24 24">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+                                </svg>
+                                <span class="text-[11px] font-bold uppercase tracking-wider text-slate-300">Mandala</span>
+                            </button>
+                            
+                            <!-- Stencil 2: Rose -->
+                            <button onclick="selectStencil('rose')" class="stencil-btn group p-4 bg-tattooDark border border-tattooDark-border rounded-xl hover:border-tattooRed flex flex-col items-center gap-2 transition" id="btn-stencil-rose">
+                                <i class="fa-solid fa-rose text-3xl text-slate-300 group-hover:text-tattooRed"></i>
+                                <span class="text-[11px] font-bold uppercase tracking-wider text-slate-300">Neo-Rosa</span>
+                            </button>
+
+                            <!-- Stencil 3: Snake -->
+                            <button onclick="selectStencil('snake')" class="stencil-btn group p-4 bg-tattooDark border border-tattooDark-border rounded-xl hover:border-tattooRed flex flex-col items-center gap-2 transition" id="btn-stencil-snake">
+                                <i class="fa-solid fa-dragon text-3xl text-slate-300 group-hover:text-tattooRed"></i>
+                                <span class="text-[11px] font-bold uppercase tracking-wider text-slate-300">Dragón Imperial</span>
+                            </button>
+
+                            <!-- Stencil 4: geometric -->
+                            <button onclick="selectStencil('geometric')" class="stencil-btn group p-4 bg-tattooDark border border-tattooDark-border rounded-xl hover:border-tattooRed flex flex-col items-center gap-2 transition" id="btn-stencil-geometric">
+                                <i class="fa-solid fa-compass text-3xl text-slate-300 group-hover:text-tattooRed"></i>
+                                <span class="text-[11px] font-bold uppercase tracking-wider text-slate-300">Geométrico</span>
+                            </button>
+                        </div>
+
+                        <!-- Body Part Selector -->
+                        <h3 class="text-lg font-bold text-white border-b border-tattooDark-border pb-3 mb-4">
+                            2. Cambia el Fondo (Lienzo)
+                        </h3>
+                        <div class="flex gap-2 mb-6">
+                            <button onclick="changeLienzo('arm')" class="lienzo-btn flex-1 py-2 bg-tattooRed text-white rounded text-xs font-bold uppercase tracking-wider transition border border-transparent" id="btn-lienzo-arm">
+                                Brazo
+                            </button>
+                            <button onclick="changeLienzo('back')" class="lienzo-btn flex-1 py-2 bg-tattooDark border border-tattooDark-border text-slate-300 rounded text-xs font-bold uppercase tracking-wider transition" id="btn-lienzo-back">
+                                Espalda
+                            </button>
+                            <button onclick="changeLienzo('neck')" class="lienzo-btn flex-1 py-2 bg-tattooDark border border-tattooDark-border text-slate-300 rounded text-xs font-bold uppercase tracking-wider transition" id="btn-lienzo-neck">
+                                Pecho
+                            </button>
+                        </div>
+
+                        <!-- Manual Scale, Rotate & Color Adjustments -->
+                        <h3 class="text-lg font-bold text-white border-b border-tattooDark-border pb-3 mb-4">
+                            3. Controles Finos
+                        </h3>
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between text-xs text-slate-400 mb-1">
+                                    <span>Escalar</span>
+                                    <span id="scale-val">100%</span>
+                                </div>
+                                <input type="range" id="scale-slider" min="30" max="250" value="100" class="w-full h-1 bg-tattooDark-border rounded-lg appearance-none cursor-pointer accent-tattooRed">
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-xs text-slate-400 mb-1">
+                                    <span>Rotar</span>
+                                    <span id="rotate-val">0°</span>
+                                </div>
+                                <input type="range" id="rotate-slider" min="0" max="360" value="0" class="w-full h-1 bg-tattooDark-border rounded-lg appearance-none cursor-pointer accent-tattooRed">
+                            </div>
+                            <div>
+                                <span class="text-xs text-slate-400 block mb-2">Color del Stencil</span>
+                                <div class="flex gap-3">
+                                    <button onclick="setStencilColor('black')" class="color-btn w-8 h-8 rounded-full border border-white bg-black ring-2 ring-tattooRed/40 transition"></button>
+                                    <button onclick="setStencilColor('red')" class="color-btn w-8 h-8 rounded-full border border-slate-600 bg-tattooRed transition"></button>
+                                    <button onclick="setStencilColor('white')" class="color-btn w-8 h-8 rounded-full border border-slate-600 bg-white transition"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 pt-4 border-t border-tattooDark-border">
+                        <p class="text-xs text-slate-400 italic flex items-start gap-2">
+                            <i class="fa-solid fa-circle-info text-tattooRed text-sm mt-0.5"></i>
+                            Puedes arrastrar el diseño con el mouse/dedo sobre el lienzo para acomodarlo en el área que prefieras.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Live Canvas Display -->
+                <div class="lg:col-span-8 bg-tattooDark-panel p-6 rounded-2xl border border-tattooDark-border flex flex-col items-center justify-center relative min-h-[500px] overflow-hidden">
+                    <div class="absolute top-4 left-4 z-10 bg-black/70 px-3 py-1.5 rounded-lg border border-tattooDark-border text-xs text-slate-300">
+                        <i class="fa-solid fa-desktop mr-1"></i> Previsualización en Vivo
+                    </div>
+                    
+                    <!-- Canvas Container -->
+                    <div id="simulator-container" class="relative w-full max-w-lg h-[450px] bg-black rounded-xl overflow-hidden shadow-2xl border border-tattooDark-border flex items-center justify-center cursor-crosshair">
+                        
+                        <!-- Skin Background Image (Changes dynamically) -->
+                        <img id="skin-bg" src="https://images.unsplash.com/photo-1598257006458-087169a1f08d?q=80&w=600&auto=format&fit=crop" onerror="this.src='https://placehold.co/600x450/222/555?text=Arm+Canvas'" alt="Silueta Piel" class="absolute inset-0 w-full h-full object-cover select-none pointer-events-none filter brightness-50 contrast-125">
+                        
+                        <!-- Overlay Dark vignette for aesthetics -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none"></div>
+
+                        <!-- Floating Stencil Wrapper (Draggable & Adjustable) -->
+                        <div id="draggable-stencil" class="absolute z-20 cursor-move touch-none select-none transition-shadow active:cursor-grabbing" style="left: 50%; top: 40%; transform: translate(-50%, -50%) scale(1) rotate(0deg);">
+                            
+                            <!-- Stencil Render (Uses SVG vector drawing to look like actual tattoo stencil lines) -->
+                            <div id="stencil-graphic" class="text-black transition-colors duration-200">
+                                <!-- SVG 1: Mandala -->
+                                <svg id="svg-mandala" class="w-48 h-48 fill-current transition-colors duration-300" viewBox="0 0 100 100">
+                                    <!-- Intricate tribal-like mandala vector -->
+                                    <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                                    <circle cx="50" cy="50" r="35" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="2,2"/>
+                                    <circle cx="50" cy="50" r="10" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                                    <!-- Petals / Rays -->
+                                    <path d="M 50,5 L 50,20 M 50,80 L 50,95 M 5,50 L 20,50 M 80,50 L 95,50" stroke="currentColor" stroke-width="1.5"/>
+                                    <path d="M 18.2,18.2 L 28.8,28.8 M 71.2,71.2 L 81.8,81.8 M 18.2,81.8 L 28.8,71.2 M 71.2,18.2 L 81.8,28.8" stroke="currentColor" stroke-width="1.2"/>
+                                    <!-- Sacred geometry star pattern -->
+                                    <polygon points="50,15 60,35 80,30 65,50 80,70 60,65 50,85 40,65 20,70 35,50 20,30 40,35" fill="none" stroke="currentColor" stroke-width="1.2" />
+                                </svg>
+
+                                <!-- SVG 2: Rose -->
+                                <svg id="svg-rose" class="w-48 h-48 fill-current hidden transition-colors duration-300" viewBox="0 0 100 100">
+                                    <!-- Artistic Neo Rose Outline -->
+                                    <path d="M50,10 C35,10 30,30 50,45 C70,30 65,10 50,10 Z" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                                    <path d="M50,25 C45,20 40,25 50,35 C60,25 55,20 50,25 Z" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                                    <!-- Outer leaves -->
+                                    <path d="M35,35 C20,35 15,55 35,60 M65,35 C80,35 85,55 65,60" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                                    <!-- Stem and thorns -->
+                                    <path d="M50,45 L50,85 M50,60 L40,55 M50,70 L60,65" fill="none" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M50,85 C40,90 35,85 30,80 M50,85 C60,90 65,85 70,80" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                                </svg>
+
+                                <!-- SVG 3: Dragon -->
+                                <svg id="svg-dragon" class="w-48 h-48 fill-current hidden transition-colors duration-300" viewBox="0 0 100 100">
+                                    <!-- Dragon Tattoo Crest Stencil -->
+                                    <path d="M50,5 C30,10 20,30 35,45 C25,50 15,40 10,60 C25,55 30,70 50,80 C70,70 75,55 90,60 C85,40 75,50 65,45 C80,30 70,10 50,5 Z" fill="none" stroke="currentColor" stroke-width="1.8"/>
+                                    <path d="M40,20 C45,22 55,22 60,20 M35,35 C45,38 55,38 65,35" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                                    <circle cx="42" cy="15" r="2" fill="currentColor"/>
+                                    <circle cx="58" cy="15" r="2" fill="currentColor"/>
+                                    <!-- Spine nodes -->
+                                    <path d="M50,25 L50,75" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3,3"/>
+                                </svg>
+
+                                <!-- SVG 4: Geometric Line -->
+                                <svg id="svg-geometric" class="w-48 h-48 fill-current hidden transition-colors duration-300" viewBox="0 0 100 100">
+                                    <!-- Minimalist geometric tattoo stencils -->
+                                    <line x1="10" y1="50" x2="90" y2="50" stroke="currentColor" stroke-width="1.8"/>
+                                    <line x1="50" y1="10" x2="50" y2="90" stroke="currentColor" stroke-width="1.8"/>
+                                    <polygon points="50,20 80,50 50,80 20,50" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                                    <circle cx="50" cy="50" r="25" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                                    <circle cx="50" cy="50" r="5" fill="currentColor"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Canvas Reset & Quick actions -->
+                    <div class="mt-4 flex gap-4">
+                        <button onclick="resetSimulator()" class="px-4 py-2 bg-tattooDark border border-tattooDark-border hover:border-tattooRed text-xs text-slate-300 rounded uppercase font-bold tracking-wider transition">
+                            <i class="fa-solid fa-arrow-rotate-left mr-1"></i> Reiniciar
+                        </button>
+                        <button onclick="copySimulatorDesign()" class="px-4 py-2 bg-tattooRed hover:bg-tattooRed-hover text-xs text-white rounded uppercase font-bold tracking-wider transition">
+                            <i class="fa-solid fa-camera mr-1"></i> Guardar Diseño
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Artists Section -->
+    <section id="artistas" class="py-24 bg-tattooDark-panel border-b border-tattooDark-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="font-serif text-4xl sm:text-5xl font-black text-white uppercase tracking-wider">
+                    Nuestros <span class="text-tattooRed">Residentes</span>
+                </h2>
+                <div class="h-1 w-20 bg-tattooRed mx-auto my-4 rounded-full"></div>
+                <p class="text-slate-400 text-sm sm:text-base">
+                    Artistas altamente especializados y apasionados por convertir tu lienzo vivo en una obra maestra sin fecha de caducidad.
+                </p>
+            </div>
+
+            <!-- Artist Showcase Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                
+                <!-- Artist 1 -->
+                <div class="bg-tattooDark p-5 rounded-2xl border border-tattooDark-border text-center hover:border-tattooRed/50 transition duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="w-32 h-32 rounded-full mx-auto overflow-hidden border-2 border-tattooRed mb-4 shadow-lg shadow-tattooRed/20">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=300&auto=format&fit=crop" onerror="this.src='https://placehold.co/300x300/121212/ef4444?text=Artist+1'" alt="Diana Arango" class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="text-xl font-serif font-bold text-white">Diana Arango</h3>
+                        <span class="text-xs text-tattooRed font-semibold uppercase tracking-widest block mt-1">Realismo Sombrío</span>
+                        <p class="text-xs text-slate-400 mt-4 px-2">
+                            Maestra en el uso de sombras hiperrealistas y degradados suaves de alta fidelidad.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-tattooDark-border flex items-center justify-center gap-3">
+                        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-white transition"><i class="fa-brands fa-instagram text-lg"></i></a>
+                        <a href="#reserva" class="px-3 py-1.5 bg-tattooRed/10 hover:bg-tattooRed border border-tattooRed/30 text-white text-[10px] font-bold uppercase tracking-wider rounded transition">Agendar</a>
+                    </div>
+                </div>
+
+                <!-- Artist 2 -->
+                <div class="bg-tattooDark p-5 rounded-2xl border border-tattooDark-border text-center hover:border-tattooRed/50 transition duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="w-32 h-32 rounded-full mx-auto overflow-hidden border-2 border-tattooRed mb-4 shadow-lg shadow-tattooRed/20">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=300&auto=format&fit=crop" onerror="this.src='https://placehold.co/300x300/121212/ef4444?text=Artist+2'" alt="Alejandro Cruz" class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="text-xl font-serif font-bold text-white">Alejandro Cruz</h3>
+                        <span class="text-xs text-tattooRed font-semibold uppercase tracking-widest block mt-1">Blackwork Extremo</span>
+                        <p class="text-xs text-slate-400 mt-4 px-2">
+                            Especialista en geometría sagrada y rellenos negros sólidos.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-tattooDark-border flex items-center justify-center gap-3">
+                        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-white transition"><i class="fa-brands fa-instagram text-lg"></i></a>
+                        <a href="#reserva" class="px-3 py-1.5 bg-tattooRed/10 hover:bg-tattooRed border border-tattooRed/30 text-white text-[10px] font-bold uppercase tracking-wider rounded transition">Agendar</a>
+                    </div>
+                </div>
+
+                <!-- Artist 3 -->
+                <div class="bg-tattooDark p-5 rounded-2xl border border-tattooDark-border text-center hover:border-tattooRed/50 transition duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="w-32 h-32 rounded-full mx-auto overflow-hidden border-2 border-tattooRed mb-4 shadow-lg shadow-tattooRed/20">
+                            <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=300&auto=format&fit=crop" onerror="this.src='https://placehold.co/300x300/121212/ef4444?text=Artist+3'" alt="Niko Vandal" class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="text-xl font-serif font-bold text-white">Niko Vandal</h3>
+                        <span class="text-xs text-tattooRed font-semibold uppercase tracking-widest block mt-1">Tradicional Bold</span>
+                        <p class="text-xs text-slate-400 mt-4 px-2">
+                            Amante del estilo Old School tradicional con líneas súper gruesas y paletas de color vintage.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-tattooDark-border flex items-center justify-center gap-3">
+                        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-white transition"><i class="fa-brands fa-instagram text-lg"></i></a>
+                        <a href="#reserva" class="px-3 py-1.5 bg-tattooRed/10 hover:bg-tattooRed border border-tattooRed/30 text-white text-[10px] font-bold uppercase tracking-wider rounded transition">Agendar</a>
+                    </div>
+                </div>
+
+                <!-- Artist 4 -->
+                <div class="bg-tattooDark p-5 rounded-2xl border border-tattooDark-border text-center hover:border-tattooRed/50 transition duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="w-32 h-32 rounded-full mx-auto overflow-hidden border-2 border-tattooRed mb-4 shadow-lg shadow-tattooRed/20">
+                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=300&auto=format&fit=crop" onerror="this.src='https://placehold.co/300x300/121212/ef4444?text=Artist+4'" alt="Sonia Black" class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="text-xl font-serif font-bold text-white">Sonia Black</h3>
+                        <span class="text-xs text-tattooRed font-semibold uppercase tracking-widest block mt-1">Línea Fina & Puntillismo</span>
+                        <p class="text-xs text-slate-400 mt-4 px-2">
+                            Diseños elegantes, discretos y altamente conceptuales de fineline.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-tattooDark-border flex items-center justify-center gap-3">
+                        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-white transition"><i class="fa-brands fa-instagram text-lg"></i></a>
+                        <a href="#reserva" class="px-3 py-1.5 bg-tattooRed/10 hover:bg-tattooRed border border-tattooRed/30 text-white text-[10px] font-bold uppercase tracking-wider rounded transition">Agendar</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Style Finder Quiz -->
+    <section id="cuestionario" class="py-24 bg-tattooDark border-b border-tattooDark-border">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <span class="text-xs text-tattooRed font-extrabold uppercase tracking-widest px-3 py-1 bg-tattooRed/10 border border-tattooRed/20 rounded-full inline-block mb-3">Encuentra tu Estética</span>
+                <h2 class="font-serif text-4xl font-black text-white uppercase tracking-wider">¿No estás seguro de tu diseño?</h2>
+                <p class="text-slate-400 text-sm mt-3">Responde nuestro cuestionario de 4 preguntas para recomendarte artista, estilo y obtener un estimado.</p>
+            </div>
+
+            <div class="bg-tattooDark-panel rounded-2xl border border-tattooDark-border p-6 sm:p-10 shadow-2xl relative overflow-hidden">
+                
+                <!-- Quiz Progress Bar -->
+                <div class="w-full bg-tattooDark h-1.5 rounded-full overflow-hidden mb-8">
+                    <div id="quiz-progress" class="bg-tattooRed h-full w-1/4 transition-all duration-300"></div>
+                </div>
+
+                <!-- Quiz Steps Container -->
+                <div id="quiz-step-1" class="quiz-step">
+                    <h3 class="text-xl sm:text-2xl font-serif font-bold text-white mb-6">1. ¿Dónde quieres ubicar tu nuevo tatuaje?</h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                        <button onclick="nextQuizStep(1, 'Brazo')" class="quiz-opt p-5 bg-tattooDark border border-tattooDark-border hover:border-tattooRed rounded-xl flex flex-col items-center gap-3 transition">
+                            <i class="fa-solid fa-hand text-2xl text-slate-400"></i>
+                            <span class="text-xs font-bold uppercase tracking-wider text-slate-300">Brazo</span>
+                        </button>
+                        <button onclick="nextQuizStep(1, 'Espalda')" class="quiz-opt p-5 bg-tattooDark border border-tattooDark-border hover:border-tattooRed rounded-xl flex flex-col items-center gap-3 transition">
+                            <i class="fa-solid fa-person-running text-2xl text-slate-400"></i>
+                            <span class="text-xs font-bold uppercase tracking-wider text-slate-300">Espalda</span>
+                        </button>
+                        <button onclick="nextQuizStep(1, 'Pecho/Abdomen')" class="quiz-opt p-5 bg-tattooDark border border-tattooDark-border hover:border-tattooRed rounded-xl flex flex-col items-center gap-3 transition">
+                            <i class="fa-solid fa-heart text-2xl text-slate-400"></i>
+                            <span class="text-xs font-bold uppercase tracking-wider text-slate-300">Pecho</span>
+                        </button>
+                        <button onclick="nextQuizStep(1, 'Pierna')" class="quiz-opt p-5 bg-tattooDark border border-tattooDark-border hover:border-tattooRed rounded-xl flex flex-col items-center gap-3 transition">
+                            <i class="fa-solid fa-shoe-prints text-2xl text-slate-400"></i>
+                            <span class="text-xs font-bold uppercase tracking-wider text-slate-300">Pierna</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="quiz-step-2" class="quiz-step hidden">
+                    <h3 class="text-xl sm:text-2xl font-serif font-bold text-white mb-6">2. ¿Qué estilo visual prefieres?</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <button onclick="nextQuizStep(2, 'Blackwork')" class="quiz-opt p-4 bg-tattooDark border border-tattooDark-border hover:border-tattooRed rounded-xl flex items-center gap-4 transition text-left">
+                            <span class="w-8 h-8 rounded-full bg-black border border-slate-600"></span>
+                            <div>
+                                <h4 class="text-sm font-bold text-white uppercase">Blackwork Sólido</h4>
+                                <p class="text-xs text-slate-400 mt-1">Negros oscuros totales y geometría.</p>
+                            </div>
+                        </button>
+                        <button onclick="nextQuizStep(2, 'Realismo')" class="quiz-opt p-4 bg-tattooDark border border-tattooDark-border hover:border-tattooRed rounded-xl flex items-center gap-4 transition text-left">
+                            <span class="w-8 h-8 rounded-full bg-slate-800 border border-slate-600"></span>
+                            <div>
+                                <h4 class="text-sm font-bold text-white uppercase">Realismo Sombras</h4>
+                                <p class="text-xs text-slate-400 mt-1">Fotografías y rostros perfectos.</p>
+                            </div>
+                        </button>
+                        <button onclick="nextQuizStep(2, 'Tradicional')" class="quiz-opt p-4 bg-tattooDark border border-tattooDark-border hover:border-tattooRed rounded-xl flex items-center gap-4 transition text-left">
+                            <span class="w-8 h-8 rounded-full bg-tattooRed border border-slate-600"></span>
+                            <div>
+                                <h4 class="text-sm font-bold text-white uppercase">Tradicional Old School</h4>
+                                <p class="text-xs text-slate-400 mt-1">Colores sólidos y bordes gruesos.</p>
+                            </div>
+                        </button>
+                        <button onclick="nextQuizStep(2, 'Línea Fina')" class="quiz-opt p-4 bg-tattooDark border border-tattooDark-border hover:border-tattooRed rounded-xl flex items-center gap-4 transition text-left">
+                            <span class="w-8 h-8 rounded-full bg-white border border-slate-600"></span>
+                            <div>
+                                <h4 class="text-sm font-bold text-white uppercase">Línea Fina y Delicada</h4>
+                                <p class="text-xs text-slate-400 mt-1">Elegancia discreta y minimalismo.</p>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="quiz-step-3" class="quiz-step hidden">
+                    <h3 class="text-xl sm:text-2xl font-serif font-bold text-white mb-6">3. ¿Qué tamaño estimado tienes en mente?</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <button onclick="nextQuizStep(3, 'Pequeño')" class="quiz-opt p-5 bg-tattooDark border border-tattooDark-border hover:border-tattooRed rounded-xl flex flex-col items-center gap-3 transition">
+                            <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Menos de 5cm</span>
+                            <span class="text-xl font-bold text-white">Pequeño</span>
+                            <span class="text-[10px] text-slate-500">Ideal para muñecas o tobillos</span>
+                        </button>
+                        <button onclick="nextQuizStep(3, 'Mediano')" class="quiz-opt p-5 bg-tattooDark border border-tattooDark-border hover:border-tattooRed rounded-xl flex flex-col items-center gap-3 transition">
+                            <span class="text-xs font-bold uppercase tracking-wider text-slate-400">5cm - 15cm</span>
+                            <span class="text-xl font-bold text-white">Mediano</span>
+                            <span class="text-[10px] text-slate-500">Perfecto para antebrazos u hombro</span>
+                        </button>
+                        <button onclick="nextQuizStep(3, 'Grande')" class="quiz-opt p-5 bg-tattooDark border border-tattooDark-border hover:border-tattooRed rounded-xl flex flex-col items-center gap-3 transition">
+                            <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Más de 15cm</span>
+                            <span class="text-xl font-bold text-white">Grande / Pieza</span>
+                            <span class="text-[10px] text-slate-500">Manga completa, espalda o muslo</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="quiz-step-4" class="quiz-step hidden text-center">
+                    <div class="w-16 h-16 rounded-full bg-tattooRed/20 text-tattooRed border border-tattooRed flex items-center justify-center mx-auto mb-6">
+                        <i class="fa-solid fa-award text-3xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-serif font-bold text-white mb-2">¡Tu Propuesta Personalizada!</h3>
+                    <p class="text-xs text-slate-400 uppercase tracking-widest mb-6">Analizando tus opciones...</p>
+                    
+                    <div class="bg-tattooDark p-6 rounded-xl border border-tattooDark-border inline-block text-left w-full max-w-md mx-auto mb-6">
+                        <div class="flex justify-between items-center border-b border-tattooDark-border pb-3 mb-4">
+                            <span class="text-xs text-slate-400 uppercase">Estilo</span>
+                            <span id="res-estilo" class="text-sm font-bold text-white uppercase"></span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-tattooDark-border pb-3 mb-4">
+                            <span class="text-xs text-slate-400 uppercase">Zona</span>
+                            <span id="res-zona" class="text-sm font-bold text-white"></span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-tattooDark-border pb-3 mb-4">
+                            <span class="text-xs text-slate-400 uppercase">Tatuador Sugerido</span>
+                            <span id="res-artista" class="text-sm font-bold text-tattooRed"></span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs text-slate-400 uppercase">Presupuesto Estimado</span>
+                            <span id="res-precio" class="text-base font-black text-white"></span>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <button onclick="restartQuiz()" class="px-6 py-3 bg-tattooDark border border-tattooDark-border text-slate-300 rounded-lg hover:border-tattooRed text-xs font-bold uppercase tracking-wider">
+                            Reiniciar Test
+                        </button>
+                        <button onclick="fillBookingFromQuiz()" class="px-6 py-3 bg-tattooRed hover:bg-tattooRed-hover text-white rounded-lg text-xs font-bold uppercase tracking-wider">
+                            Reservar Con Esta Opción
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking Section -->
+    <section id="reserva" class="py-24 bg-tattooDark-panel border-b border-tattooDark-border relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                
+                <!-- Left Details Info -->
+                <div>
+                    <span class="text-xs text-slate-400 uppercase tracking-[0.3em] font-bold block mb-2">Reserva Tu Espacio</span>
+                    <h2 class="font-serif text-4xl sm:text-5xl font-black text-white uppercase leading-tight">
+                        Tinta que Cuenta <span class="text-tattooRed">Tu Historia</span>
+                    </h2>
+                    <div class="h-1 w-20 bg-tattooRed my-6 rounded-full"></div>
+                    
+                    <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-8">
+                        Reserva tu sesión de diseño personalizada directamente en nuestra agenda digital. Completa la información necesaria para que nuestros artistas comiencen a trazar tus ideas antes de que llegues al estudio.
+                    </p>
+
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 bg-tattooDark border border-tattooDark-border flex items-center justify-center text-tattooRed rounded-lg">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Ubicación Central</h4>
+                                <p class="text-sm text-white font-bold">Av. Insurgentes Sur 432, CDMX</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 bg-tattooDark border border-tattooDark-border flex items-center justify-center text-tattooRed rounded-lg">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Llámanos o escríbenos</h4>
+                                <p class="text-sm text-white font-bold">+52 55 4321 0987</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 bg-tattooDark border border-tattooDark-border flex items-center justify-center text-tattooRed rounded-lg">
+                                <i class="fa-solid fa-envelope"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Correo Electrónico</h4>
+                                <p class="text-sm text-white font-bold">contacto@lienzovivo.com</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Form Box -->
+                <div class="bg-tattooDark p-6 sm:p-8 rounded-2xl border border-tattooDark-border shadow-2xl relative">
+                    <h3 class="text-lg font-bold text-white mb-6 uppercase tracking-wider">
+                        Formulario de Reserva
+                    </h3>
+                    
+                    <!-- Form Submit Notification -->
+                    <div id="booking-success-alert" class="hidden mb-6 p-4 bg-emerald-950 border border-emerald-500 rounded-xl text-emerald-200 text-sm flex items-start gap-3">
+                        <i class="fa-solid fa-circle-check text-emerald-400 text-lg mt-0.5"></i>
+                        <div>
+                            <span class="font-bold block">¡Solicitud Enviada Exitosamente!</span>
+                            <span class="text-xs">Revisaremos tu diseño y te contactaremos por WhatsApp o e-mail en menos de 2 horas para formalizar la hora exacta de tu cita.</span>
+                        </div>
+                    </div>
+
+                    <form id="booking-form" onsubmit="submitBookingForm(event)" class="space-y-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-xs text-slate-400 font-bold block mb-1.5 uppercase">Nombre Completo</label>
+                                <input type="text" id="form-name" required class="w-full bg-tattooDark-panel border border-tattooDark-border rounded px-4 py-2.5 text-white text-sm focus:border-tattooRed outline-none transition" placeholder="Ej: Rodrigo Martínez">
+                            </div>
+                            <div>
+                                <label class="text-xs text-slate-400 font-bold block mb-1.5 uppercase">WhatsApp / Teléfono</label>
+                                <input type="tel" id="form-phone" required class="w-full bg-tattooDark-panel border border-tattooDark-border rounded px-4 py-2.5 text-white text-sm focus:border-tattooRed outline-none transition" placeholder="Ej: +52 5512345678">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="text-xs text-slate-400 font-bold block mb-1.5 uppercase">Correo Electrónico</label>
+                            <input type="email" id="form-email" required class="w-full bg-tattooDark-panel border border-tattooDark-border rounded px-4 py-2.5 text-white text-sm focus:border-tattooRed outline-none transition" placeholder="tu@correo.com">
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-xs text-slate-400 font-bold block mb-1.5 uppercase">Artista Preferido</label>
+                                <select id="form-artist" class="w-full bg-tattooDark-panel border border-tattooDark-border rounded px-4 py-2.5 text-white text-sm focus:border-tattooRed outline-none transition">
+                                    <option value="cualquiera">El más adecuado para mi estilo</option>
+                                    <option value="Diana Arango">Diana Arango (Realismo Sombrío)</option>
+                                    <option value="Alejandro Cruz">Alejandro Cruz (Blackwork Extremo)</option>
+                                    <option value="Niko Vandal">Niko Vandal (Tradicional Bold)</option>
+                                    <option value="Sonia Black">Sonia Black (Línea Fina)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-xs text-slate-400 font-bold block mb-1.5 uppercase">Estilo Visual</label>
+                                <select id="form-style" class="w-full bg-tattooDark-panel border border-tattooDark-border rounded px-4 py-2.5 text-white text-sm focus:border-tattooRed outline-none transition">
+                                    <option value="blackwork">Blackwork Sólido</option>
+                                    <option value="realismo">Realismo Sombras</option>
+                                    <option value="tradicional">Tradicional / Old School</option>
+                                    <option value="fineline">Línea Fina</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-xs text-slate-400 font-bold block mb-1.5 uppercase">Fecha Tentativa</label>
+                                <input type="date" id="form-date" required class="w-full bg-tattooDark-panel border border-tattooDark-border rounded px-4 py-2.5 text-white text-sm focus:border-tattooRed outline-none transition">
+                            </div>
+                            <div>
+                                <label class="text-xs text-slate-400 font-bold block mb-1.5 uppercase">Tamaño Estimado</label>
+                                <select id="form-size" class="w-full bg-tattooDark-panel border border-tattooDark-border rounded px-4 py-2.5 text-white text-sm focus:border-tattooRed outline-none transition">
+                                    <option value="pequeno">Pequeño (&lt; 5cm)</option>
+                                    <option value="mediano">Mediano (5cm - 15cm)</option>
+                                    <option value="grande">Grande (&gt; 15cm)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="text-xs text-slate-400 font-bold block mb-1.5 uppercase">Describe tu Idea</label>
+                            <textarea id="form-idea" rows="3" class="w-full bg-tattooDark-panel border border-tattooDark-border rounded px-4 py-2.5 text-white text-sm focus:border-tattooRed outline-none transition" placeholder="Detalla referencias de stencils, elementos visuales importantes, ubicación en el cuerpo, etc."></textarea>
+                        </div>
+
+                        <div class="pt-2">
+                            <button type="submit" class="w-full py-3.5 bg-tattooRed hover:bg-tattooRed-hover text-white text-xs font-bold uppercase tracking-widest rounded transition duration-300 shadow-xl shadow-tattooRed/20">
+                                Enviar Solicitud de Cita
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-24 bg-tattooDark border-b border-tattooDark-border">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="font-serif text-4xl font-black text-white uppercase tracking-wider">Preguntas Frecuentes</h2>
+                <div class="h-1 w-20 bg-tattooRed mx-auto my-4 rounded-full"></div>
+            </div>
+
+            <!-- FAQ Grid accordion style -->
+            <div class="space-y-4">
+                
+                <div class="bg-tattooDark-panel border border-tattooDark-border rounded-xl overflow-hidden">
+                    <button onclick="toggleFaq(1)" class="w-full p-5 text-left flex justify-between items-center hover:bg-black/20 focus:outline-none">
+                        <span class="font-serif text-lg font-bold text-white">¿Duele mucho hacerse un tatuaje?</span>
+                        <i id="faq-icon-1" class="fa-solid fa-chevron-down text-tattooRed transition-transform duration-300"></i>
+                    </button>
+                    <div id="faq-content-1" class="hidden p-5 border-t border-tattooDark-border bg-tattooDark/40 text-sm text-slate-300 leading-relaxed">
+                        El dolor es subjetivo y depende del umbral de cada persona y de la zona del cuerpo elegida. Zonas como costillas, pies o codos tienden a ser más sensibles que brazos o muslos. Nuestros artistas son sumamente cuidadosos y aplican técnicas suaves para que tu experiencia sea cómoda.
+                    </div>
+                </div>
+
+                <div class="bg-tattooDark-panel border border-tattooDark-border rounded-xl overflow-hidden">
+                    <button onclick="toggleFaq(2)" class="w-full p-5 text-left flex justify-between items-center hover:bg-black/20 focus:outline-none">
+                        <span class="font-serif text-lg font-bold text-white">¿Cuáles son los cuidados recomendados tras tatuarse?</span>
+                        <i id="faq-icon-2" class="fa-solid fa-chevron-down text-tattooRed transition-transform duration-300"></i>
+                    </button>
+                    <div id="faq-content-2" class="hidden p-5 border-t border-tattooDark-border bg-tattooDark/40 text-sm text-slate-300 leading-relaxed">
+                        Deberás lavar el tatuaje suavemente con jabón neutro 3 veces al día, aplicar una fina capa de pomada cicatrizante recomendada y evitar rascarte, jalar la costra, exponerte directamente al sol o sumergirte en albercas y playas durante las primeras 2 a 3 semanas.
+                    </div>
+                </div>
+
+                <div class="bg-tattooDark-panel border border-tattooDark-border rounded-xl overflow-hidden">
+                    <button onclick="toggleFaq(3)" class="w-full p-5 text-left flex justify-between items-center hover:bg-black/20 focus:outline-none">
+                        <span class="font-serif text-lg font-bold text-white">¿Tienen certificaciones sanitarias vigentes?</span>
+                        <i id="faq-icon-3" class="fa-solid fa-chevron-down text-tattooRed transition-transform duration-300"></i>
+                    </button>
+                    <div id="faq-content-3" class="hidden p-5 border-t border-tattooDark-border bg-tattooDark/40 text-sm text-slate-300 leading-relaxed">
+                        Sí, absolutamente. Contamos con todas las licencias de salubridad gubernamentales activas. Utilizamos agujas nuevas selladas y estériles que abrimos frente a ti, pigmentos hipoalergénicos importados de primer nivel y autoclave hospitalario de esterilización.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="bg-black py-12 border-t border-tattooDark-border text-slate-400 text-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-8 h-8 rounded-full border border-tattooRed flex items-center justify-center">
+                        <i class="fa-solid fa-skull-crossbones text-tattooRed"></i>
+                    </div>
+                    <span class="font-serif text-xl font-black text-white tracking-widest">LIENZO<span class="text-tattooRed">VIVO</span></span>
+                </div>
+                <p class="text-xs text-slate-400 leading-relaxed">
+                    Estudio de tatuajes de autor y de alta gama en la Ciudad de México. Elevando la expresión personal a la categoría de obras maestras perennes.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-4 uppercase text-xs tracking-wider">Enlaces Útiles</h4>
+                <ul class="space-y-2 text-xs">
+                    <li><a href="#inicio" class="hover:text-tattooRed transition">Inicio</a></li>
+                    <li><a href="#galeria" class="hover:text-tattooRed transition">Galería</a></li>
+                    <li><a href="#simulador" class="hover:text-tattooRed transition">Probador de Tatuajes</a></li>
+                    <li><a href="#artistas" class="hover:text-tattooRed transition">Nuestros Artistas</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-4 uppercase text-xs tracking-wider">Horarios</h4>
+                <ul class="space-y-2 text-xs text-slate-300">
+                    <li>Lunes a Sábado: 11:00 AM - 8:00 PM</li>
+                    <li>Domingo: Con cita previa</li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-4 uppercase text-xs tracking-wider">Newsletter</h4>
+                <p class="text-xs text-slate-400 mb-3">Recibe stencils de regalo e invitaciones a eventos Flash.</p>
+                <div class="flex">
+                    <input type="email" placeholder="Tu email" class="bg-tattooDark-panel border border-tattooDark-border rounded-l px-3 py-2 text-xs text-white outline-none w-full">
+                    <button class="bg-tattooRed hover:bg-tattooRed-hover text-white px-3 rounded-r text-xs transition"><i class="fa-solid fa-envelope"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mt-12 pt-6 border-t border-tattooDark-border text-xs text-slate-600">
+            &copy; 2026 LIENZO VIVO Tattoo Studio. Todos los derechos reservados. Diseñado bajo los mayores estándares de tinta y seguridad.
+        </div>
+    </footer>
+
+    <!-- Custom Web App Logic -->
+    <script>
+        // Mobile menu toggle
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu on links clicks
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Gallery filter logic
+        function filterGallery(category) {
+            // Update active state on buttons
+            document.querySelectorAll('.gallery-tab').forEach(btn => {
+                btn.classList.remove('bg-tattooRed', 'text-white', 'border-transparent');
+                btn.classList.add('bg-tattooDark-card', 'text-slate-300', 'border-tattooDark-border');
+            });
+            event.currentTarget.classList.remove('bg-tattooDark-card', 'text-slate-300', 'border-tattooDark-border');
+            event.currentTarget.classList.add('bg-tattooRed', 'text-white', 'border-transparent');
+
+            // Filter items
+            document.querySelectorAll('.gallery-item').forEach(item => {
+                if(category === 'todos' || item.getAttribute('data-category') === category) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // Lightbox controller
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxCat = document.getElementById('lightbox-category');
+        const lightboxTitle = document.getElementById('lightbox-title');
+        const lightboxDesc = document.getElementById('lightbox-desc');
+        const lightboxArtist = document.getElementById('lightbox-artist');
+
+        function openLightbox(imgUrl, desc, artist) {
+            const item = event.currentTarget;
+            const category = item.querySelector('span').innerText;
+            const title = item.querySelector('h4').innerText;
+
+            lightboxImg.src = imgUrl;
+            lightboxCat.innerText = category;
+            lightboxTitle.innerText = title;
+            lightboxDesc.innerText = desc;
+            lightboxArtist.innerText = artist;
+
+            lightbox.classList.remove('hidden');
+        }
+
+        function closeLightbox() {
+            lightbox.classList.add('hidden');
+        }
+
+        // --- SIMULATOR CONTROLLER LOGIC ---
+        let currentStencil = 'dragon';
+        let currentLienzo = 'arm';
+        let scale = 1;
+        let rotation = 0;
+        let color = 'black';
+
+        // Coordinates for dragging
+        let isDragging = false;
+        let startX, startY;
+        const draggableStencil = document.getElementById('draggable-stencil');
+        const simulatorContainer = document.getElementById('simulator-container');
+
+        // Body skin backdrops
+        const skins = {
+            arm: 'https://images.unsplash.com/photo-1598257006458-087169a1f08d?q=80&w=600&auto=format&fit=crop',
+            back: 'https://images.unsplash.com/photo-1550537687-c91072c4792d?q=80&w=600&auto=format&fit=crop',
+            neck: 'https://images.unsplash.com/photo-1611501275019-9b5cda994e8d?q=80&w=600&auto=format&fit=crop'
+        };
+
+        function selectStencil(stencilId) {
+            currentStencil = stencilId;
+            // Update UI selected stencils border
+            document.querySelectorAll('.stencil-btn').forEach(btn => {
+                btn.classList.remove('border-tattooRed');
+                btn.classList.add('border-tattooDark-border');
+            });
+            document.getElementById(`btn-stencil-${stencilId}`).classList.remove('border-tattooDark-border');
+            document.getElementById(`btn-stencil-${stencilId}`).classList.add('border-tattooRed');
+
+            // Hide all SVG elements
+            document.getElementById('svg-mandala').classList.add('hidden');
+            document.getElementById('svg-rose').classList.add('hidden');
+            document.getElementById('svg-dragon').classList.add('hidden');
+            document.getElementById('svg-geometric').classList.add('hidden');
+
+            // Show active stencil
+            if(stencilId === 'dragon') {
+                document.getElementById('svg-mandala').classList.remove('hidden');
+            } else if(stencilId === 'rose') {
+                document.getElementById('svg-rose').classList.remove('hidden');
+            } else if(stencilId === 'snake') {
+                document.getElementById('svg-dragon').classList.remove('hidden');
+            } else if(stencilId === 'geometric') {
+                document.getElementById('svg-geometric').classList.remove('hidden');
+            }
+        }
+
+        function changeLienzo(skinType) {
+            currentLienzo = skinType;
+            // Update button visual
+            document.querySelectorAll('.lienzo-btn').forEach(btn => {
+                btn.classList.remove('bg-tattooRed', 'text-white', 'border-transparent');
+                btn.classList.add('bg-tattooDark', 'border-tattooDark-border', 'text-slate-300');
+            });
+            document.getElementById(`btn-lienzo-${skinType}`).classList.remove('bg-tattooDark', 'border-tattooDark-border', 'text-slate-300');
+            document.getElementById(`btn-lienzo-${skinType}`).classList.add('bg-tattooRed', 'text-white', 'border-transparent');
+
+            // Change image source
+            document.getElementById('skin-bg').src = skins[skinType];
+        }
+
+        // Scale & rotation sliders
+        const scaleSlider = document.getElementById('scale-slider');
+        const rotateSlider = document.getElementById('rotate-slider');
+        const scaleVal = document.getElementById('scale-val');
+        const rotateVal = document.getElementById('rotate-val');
+
+        scaleSlider.addEventListener('input', (e) => {
+            scale = e.target.value / 100;
+            scaleVal.innerText = `${e.target.value}%`;
+            updateTransform();
+        });
+
+        rotateSlider.addEventListener('input', (e) => {
+            rotation = e.target.value;
+            rotateVal.innerText = `${e.target.value}°`;
+            updateTransform();
+        });
+
+        function updateTransform() {
+            // Keep translating centered coordinates or whatever dragged positions they acquired
+            const currentTransform = draggableStencil.style.transform;
+            // Extract the translate part
+            const translateMatch = currentTransform.match(/translate\(([^)]+)\)/);
+            const translateStr = translateMatch ? translateMatch[0] : 'translate(-50%, -50%)';
+            draggableStencil.style.transform = `${translateStr} scale(${scale}) rotate(${rotation}deg)`;
+        }
+
+        function setStencilColor(colorName) {
+            const colors = {
+                black: 'text-black',
+                red: 'text-tattooRed',
+                white: 'text-white'
+            };
+            const graphic = document.getElementById('stencil-graphic');
+            graphic.className = `${colors[colorName]} transition-colors duration-200`;
+        }
+
+        // Dragging function logic
+        draggableStencil.addEventListener('mousedown', startDrag);
+        draggableStencil.addEventListener('touchstart', startDrag, { passive: false });
+
+        function startDrag(e) {
+            isDragging = true;
+            const clientX = e.type.startsWith('touch') ? e.touches[0].clientX : e.clientX;
+            const clientY = e.type.startsWith('touch') ? e.touches[0].clientY : e.clientY;
+            
+            // Get offset relative to elements container
+            const rect = draggableStencil.getBoundingClientRect();
+            startX = clientX - rect.left - rect.width / 2;
+            startY = clientY - rect.top - rect.height / 2;
+
+            document.addEventListener('mousemove', dragMove);
+            document.addEventListener('mouseup', endDrag);
+            document.addEventListener('touchmove', dragMove, { passive: false });
+            document.addEventListener('touchend', endDrag);
+        }
+
+        function dragMove(e) {
+            if (!isDragging) return;
+            e.preventDefault();
+
+            const clientX = e.type.startsWith('touch') ? e.touches[0].clientX : e.clientX;
+            const clientY = e.type.startsWith('touch') ? e.touches[0].clientY : e.clientY;
+
+            const containerRect = simulatorContainer.getBoundingClientRect();
+            
+            // Calculate relative coordinate to the simulator container
+            let posX = clientX - containerRect.left - startX;
+            let posY = clientY - containerRect.top - startY;
+
+            // Restrict bounds
+            if(posX < 0) posX = 0;
+            if(posX > containerRect.width) posX = containerRect.width;
+            if(posY < 0) posY = 0;
+            if(posY > containerRect.height) posY = containerRect.height;
+
+            // Apply direct positions
+            draggableStencil.style.left = `${posX}px`;
+            draggableStencil.style.top = `${posY}px`;
+            draggableStencil.style.transform = `translate(-50%, -50%) scale(${scale}) rotate(${rotation}deg)`;
+        }
+
+        function endDrag() {
+            isDragging = false;
+            document.removeEventListener('mousemove', dragMove);
+            document.removeEventListener('mouseup', endDrag);
+            document.removeEventListener('touchmove', dragMove);
+            document.removeEventListener('touchend', endDrag);
+        }
+
+        function resetSimulator() {
+            scale = 1;
+            rotation = 0;
+            scaleSlider.value = 100;
+            rotateSlider.value = 0;
+            scaleVal.innerText = '100%';
+            rotateVal.innerText = '0°';
+            
+            draggableStencil.style.left = '50%';
+            draggableStencil.style.top = '40%';
+            draggableStencil.style.transform = 'translate(-50%, -50%) scale(1) rotate(0deg)';
+            setStencilColor('black');
+            selectStencil('dragon');
+            changeLienzo('arm');
+        }
+
+        function copySimulatorDesign() {
+            // Provide a custom feedback message
+            const dialog = document.createElement('div');
+            dialog.className = 'fixed top-24 left-1/2 transform -translate-x-1/2 z-50 bg-tattooRed text-white px-6 py-3 rounded-lg border border-white/20 text-xs font-bold uppercase tracking-wider shadow-2xl animate-bounce';
+            dialog.innerHTML = '<i class="fa-solid fa-cloud-arrow-down mr-2"></i> ¡Diseño Guardado en tu Perfil de Sesión!';
+            document.body.appendChild(dialog);
+            setTimeout(() => dialog.remove(), 3500);
+        }
+
+        // --- INTERACTIVE STYLE QUIZ ---
+        let quizAnswers = {};
+
+        function nextQuizStep(step, val) {
+            quizAnswers[step] = val;
+            
+            // Progress Bar Update
+            const progress = document.getElementById('quiz-progress');
+            progress.style.width = `${(step + 1) * 25}%`;
+
+            // Transition Steps
+            document.getElementById(`quiz-step-${step}`).classList.add('hidden');
+            const nextStep = step + 1;
+            const nextElem = document.getElementById(`quiz-step-${nextStep}`);
+            if(nextElem) {
+                nextElem.classList.remove('hidden');
+            }
+
+            // If we are showing results, calculate recommend specs
+            if(nextStep === 4) {
+                calculateQuizResult();
+            }
+        }
+
+        function calculateQuizResult() {
+            const style = quizAnswers[2];
+            const zone = quizAnswers[1];
+            const size = quizAnswers[3];
+
+            // Suggesting dynamic artists
+            let artist = 'Cualquiera';
+            if(style === 'Blackwork') artist = 'Alejandro Cruz';
+            else if(style === 'Realismo') artist = 'Diana Arango';
+            else if(style === 'Tradicional') artist = 'Niko Vandal';
+            else if(style === 'Línea Fina') artist = 'Sonia Black';
+
+            // Price estimate logic
+            let price = '$800 - $1,500 MXN';
+            if(size === 'Mediano') price = '$2,000 - $4,500 MXN';
+            else if(size === 'Grande') price = '$5,000 - $12,000+ MXN';
+
+            document.getElementById('res-estilo').innerText = style;
+            document.getElementById('res-zona').innerText = zone;
+            document.getElementById('res-artista').innerText = artist;
+            document.getElementById('res-precio').innerText = price;
+        }
+
+        function restartQuiz() {
+            quizAnswers = {};
+            document.getElementById('quiz-progress').style.width = '25%';
+            document.getElementById('quiz-step-4').classList.add('hidden');
+            document.getElementById('quiz-step-1').classList.remove('hidden');
+        }
+
+        function fillBookingFromQuiz() {
+            // Prefill Booking Form fields based on quiz decisions
+            const styleSelect = document.getElementById('form-style');
+            const artistSelect = document.getElementById('form-artist');
+            const sizeSelect = document.getElementById('form-size');
+            const ideaText = document.getElementById('form-idea');
+
+            const quizStyle = quizAnswers[2];
+            const quizZone = quizAnswers[1];
+            const quizSize = quizAnswers[3];
+
+            // Map Style select value
+            if (quizStyle === 'Blackwork') styleSelect.value = 'blackwork';
+            else if (quizStyle === 'Realismo') styleSelect.value = 'realismo';
+            else if (quizStyle === 'Tradicional') styleSelect.value = 'tradicional';
+            else if (quizStyle === 'Línea Fina') styleSelect.value = 'fineline';
+
+            // Map Artist
+            if(quizStyle === 'Blackwork') artistSelect.value = 'Alejandro Cruz';
+            else if(quizStyle === 'Realismo') artistSelect.value = 'Diana Arango';
+            else if(quizStyle === 'Tradicional') artistSelect.value = 'Niko Vandal';
+            else if(quizStyle === 'Línea Fina') artistSelect.value = 'Sonia Black';
+
+            // Map Size
+            if(quizSize === 'Pequeño') sizeSelect.value = 'pequeno';
+            else if(quizSize === 'Mediano') sizeSelect.value = 'mediano';
+            else if(quizSize === 'Grande') sizeSelect.value = 'grande';
+
+            // Prefill customized message box
+            ideaText.value = `Tatuaje de estilo ${quizStyle} para la zona de ${quizZone}. Me gustaría platicar los detalles en la sesión.`;
+
+            // Scroll to Booking
+            document.getElementById('reserva').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // --- BOOKING FORM SUBMISSION ---
+        function submitBookingForm(e) {
+            e.preventDefault();
+            
+            // Collect info safely
+            const name = document.getElementById('form-name').value;
+            const phone = document.getElementById('form-phone').value;
+            const email = document.getElementById('form-email').value;
+
+            // Trigger success message box
+            const successBox = document.getElementById('booking-success-alert');
+            successBox.classList.remove('hidden');
+
+            // Scroll to alert smoothly
+            successBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            // Reset form
+            document.getElementById('booking-form').reset();
+
+            // Clear alert after 8 seconds
+            setTimeout(() => {
+                successBox.classList.add('hidden');
+            }, 8000);
+        }
+
+        // --- FAQ TOGGLE LOGIC ---
+        function toggleFaq(id) {
+            const content = document.getElementById(`faq-content-${id}`);
+            const icon = document.getElementById(`faq-icon-${id}`);
+
+            if(content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.classList.add('rotate-180');
+            } else {
+                content.classList.add('hidden');
+                icon.classList.remove('rotate-180');
+            }
+        }
+    </script>
+</body>
+</html>
